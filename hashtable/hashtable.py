@@ -93,25 +93,25 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        bucket = self.hash_index(key)
+        bucket = self.hash_index(key)  # hash new value
 
-        if self.data[bucket] is None:
+        if self.data[bucket] is None:  # if empty list
             self.data[bucket] = HashTableEntry(key, value)
             self.size += 1
 
-            if self.get_load_factor() > 0.7:
-                self.resize(self.capacity * 2)
+            if self.get_load_factor() > 0.7:  # if clost to full, resize
+                self.resize(self.capacity ** 2)  # resize to the power of 2
         else:
             current = self.data[bucket]
 
+            # cycle through to make sure value doesnt exist already
             while current.next is not None and current.key != key:
                 current = current.next
 
             # Overwrite existing value
             if current.key == key:
                 current.value = value
-            else:
-                # Key does not exist, so must be added
+            else:  # its a new value
                 current.next = HashTableEntry(key, value)
                 self.size += 1
 
@@ -160,7 +160,7 @@ class HashTable:
         if self.data[bucket] is not None:
             current = self.data[bucket]
 
-            while current is not None and current.key != key:
+            while current is not None and current.key != key:  # find designated key
                 current = current.next
 
             if current:
@@ -168,7 +168,7 @@ class HashTable:
             else:
                 return None
         else:
-            return None
+            return None  # if not found return none
 
     def resize(self, new_capacity):
         """
@@ -191,7 +191,7 @@ class HashTable:
                 if new_storage[bucket] is None:
                     # if the new location is empty(which it should be) puts the next entry into this slot
                     new_storage[bucket] = HashTableEntry(
-                        currrent.key, current.value)
+                        current.key, current.value)
                 else:
                     # otherwise overrides the slot with the already existing HashTableEntry
                     new_current = new_storage[bucket]
