@@ -69,12 +69,7 @@ class HashTable:
         Implement this, and/or FNV-1.
         """
         # Your code here
-        # unsigned long hash = 5381
-        # int c
-        # while ((c=*str++))
-        # hash = ((hash << 5) + hash) + c
-        # /* hash * 33 + c * /
-        # return hash % NUM_BUCKETS
+        # copied from wiki
 
         hash = 5381
         for x in key:
@@ -183,22 +178,25 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        self.capacity = new_capacity
+        self.capacity = new_capacity  # sets new capacity
+        # creates the list with None values
         new_storage = [None for i in range(new_capacity)]
 
         for linked_list in self.data:
             current = linked_list
 
-            while current is not None:
+            while current is not None:  # need to copy old list to this new list first
                 bucket = self.hash_index(current.key)
 
                 if new_storage[bucket] is None:
+                    # if the new location is empty(which it should be) puts the next entry into this slot
                     new_storage[bucket] = HashTableEntry(
-                        current.key, current.value)
+                        currrent.key, current.value)
                 else:
+                    # otherwise overrides the slot with the already existing HashTableEntry
                     new_current = new_storage[bucket]
 
-                    while new_current.next is not None:
+                    while new_current.next is not None:  # cycle to end of list
                         new_current = new_current.next
 
                     new_current.next = HashTableEntry(
@@ -206,7 +204,7 @@ class HashTable:
 
                 current = current.next
 
-        self.data = new_storage
+        self.data = new_storage  # sets the list to be the resized enw list
 
 
 if __name__ == "__main__":
